@@ -65,7 +65,7 @@ async function renderProducts(data) {
                         class="size-3"
                       />
                     </button>
-                    <span class="quantity-of-product">1</span>
+                    <span class="quantity-of-product" data-id="${i}">1</span>
                     <button
                       aria-label="add one more ${product.name} to cart"
                       class="rounded-full border p-2 cursor-pointer increment-btn" data-id="${i}"
@@ -102,7 +102,6 @@ productsContainer.addEventListener("click", function (e) {
   const decrementBtn = e.target.closest(".decrement-btn");
   if (addToCartBtn) {
     const card = addToCartBtn.closest(".card");
-    console.log(card);
     const imageContainer = card.querySelector(".imageContainer");
     const controllerDiv = card.querySelector(".controller-div");
     const productId = addToCartBtn.dataset.id;
@@ -122,33 +121,24 @@ productsContainer.addEventListener("click", function (e) {
     addToCart(selectedProduct);
     updateCartUi();
     updateCartData(cart);
-    console.log(cart);
 
     addActiveBorder(imageContainer);
     updateButtonsVisibility(controllerDiv, addToCartBtn);
   }
 
   if (incrementBtn) {
-    const card = incrementBtn.closest(".card");
-    const productQtyText = card.querySelector(".quantity-of-product");
-    console.log(cart);
     const increasedProductId = incrementBtn.dataset.id;
     const increasedProduct = cart.find(
       (item) => item.id === increasedProductId
     );
     if (increasedProduct) {
       increasedProduct.quantity++;
-      productQtyText.textContent = increasedProduct.quantity;
-      console.log(cart);
       updateCartData(cart);
     }
-    console.log(increasedProduct);
   }
 
   if (decrementBtn) {
     const card = decrementBtn.closest(".card");
-    const productQtyText = card.querySelector(".quantity-of-product");
-    console.log(cart);
     const decreasedProductId = decrementBtn.dataset.id;
     const decreasedProduct = cart.find(
       (item) => item.id === decreasedProductId
@@ -169,12 +159,10 @@ productsContainer.addEventListener("click", function (e) {
         resetButtonsVisibility(controllerDiv, addToCartBtn);
         return;
       }
+
       decreasedProduct.quantity--;
-      productQtyText.textContent = decreasedProduct.quantity;
-      console.log(cart);
       updateCartData(cart);
     }
-    console.log(decreasedProduct);
   }
 });
 
@@ -265,10 +253,23 @@ function updateCartData(data) {
   const totalPriceOfCart = data
     .map((item) => item.price * item.quantity)
     .reduce((acc, total) => acc + total, 0);
-  console.log(totalPriceOfCart);
 
   numberOfItemsInCart.textContent = totalItemsInCart;
   totalPriceOfAllOrders.textContent = totalPriceOfCart.toFixed(2);
+
+  document.querySelectorAll(".quantity-of-product").forEach((el) => {
+    el.textContent = "1";
+  });
+
+  data.forEach((item) => {
+    const qtyEl = document.querySelector(
+      `.quantity-of-product[data-id="${item.id}"]`
+    );
+
+    if (qtyEl) {
+      qtyEl.textContent = item.quantity;
+    }
+  });
 }
 
 function addToCart(data) {
@@ -276,16 +277,24 @@ function addToCart(data) {
 }
 
 cartItemsList.addEventListener("click", function (e) {
-  console.log(cartItemsList);
   const deleteBtn = e.target.closest(".delete-btn");
-  const deletedProductId = deleteBtn.dataset.id;
-  const deletedProduct = cart.find((item) => item.id === deletedProductId);
+  if (deleteBtn) {
+    const deletedProductId = deleteBtn.dataset.id;
+    const updatedCart = cart.filter(
+      (products) => products.id !== deletedProductId
+    );
+    cart = updatedCart;
+    updateCartData(cart);
 
-  const updatedCart = cart.filter(
-    (products) => products.id !== deletedProductId
-  );
-  cart = updatedCart;
-  updateCartData(cart);
+    const deletedProductButtonEl = document.querySelector(
+      `button[data-id="${deletedProductId}"]`
+    );
+    const deletedProductEl = deletedProductButtonEl.closest(".card");
+    const imgContainer = deletedProductEl.querySelector(".imageContainer");
+    const addToCartBtn = deletedProductEl.querySelector(".add-to-cart-btn");
+    const controllerDiv = deletedProductEl.querySelector(".controller-div");
+
+    removeActiveBorder(imgContainer);
+    resetButtonsVisibility(controllerDiv, addToCartBtn);
+  }
 });
-
-console.log(cart);
