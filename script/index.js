@@ -209,6 +209,13 @@ function updateCartUi() {
   itemsInCartState.classList.remove("hidden");
 }
 
+function resetCartUi() {
+  emptyCartDiv.classList.remove("hidden");
+  emptyCartDiv.classList.add("flex");
+  itemsInCartState.classList.remove("flex");
+  itemsInCartState.classList.add("hidden");
+}
+
 function updateCartData(data) {
   cartItemsList.innerHTML = "";
   const html = data
@@ -232,7 +239,9 @@ function updateCartData(data) {
                     </div>
                   </div>
                   <button
-                    class="cursor-pointer border rounded-full border-Rose-300 hover:border-Rose-900" data-id=${i}
+                    class="delete-btn cursor-pointer border rounded-full border-Rose-300 hover:border-Rose-900" data-id=${
+                      item.id
+                    }
                     aria-label="Remove ${item.name} from cart"
                   >
                     <img
@@ -249,6 +258,9 @@ function updateCartData(data) {
   cartItemsList.insertAdjacentHTML("beforeend", html);
 
   const totalItemsInCart = data.reduce((acc, item) => acc + item.quantity, 0);
+  if (totalItemsInCart < 1) {
+    resetCartUi();
+  }
 
   const totalPriceOfCart = data
     .map((item) => item.price * item.quantity)
@@ -262,3 +274,18 @@ function updateCartData(data) {
 function addToCart(data) {
   cart.push(data);
 }
+
+cartItemsList.addEventListener("click", function (e) {
+  console.log(cartItemsList);
+  const deleteBtn = e.target.closest(".delete-btn");
+  const deletedProductId = deleteBtn.dataset.id;
+  const deletedProduct = cart.find((item) => item.id === deletedProductId);
+
+  const updatedCart = cart.filter(
+    (products) => products.id !== deletedProductId
+  );
+  cart = updatedCart;
+  updateCartData(cart);
+});
+
+console.log(cart);
