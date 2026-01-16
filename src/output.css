@@ -298,6 +298,18 @@
   .min-h-dvh {
     min-height: 100dvh;
   }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
+  .w-48 {
+    width: calc(var(--spacing) * 48);
+  }
+  .w-56 {
+    width: calc(var(--spacing) * 56);
+  }
+  .w-64 {
+    width: calc(var(--spacing) * 64);
+  }
   .w-fit {
     width: fit-content;
   }
@@ -390,11 +402,18 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-2 {
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+  }
   .border-Rose-100 {
     border-color: var(--color-Rose-100);
   }
   .border-Rose-300 {
     border-color: var(--color-Rose-300);
+  }
+  .border-primary {
+    border-color: var(--color-primary);
   }
   .border-red-500 {
     border-color: var(--color-red-500);
@@ -529,6 +548,9 @@
   }
   .text-primary {
     color: var(--color-primary);
+  }
+  .text-white {
+    color: var(--color-white);
   }
   .underline {
     text-decoration-line: underline;

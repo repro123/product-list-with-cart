@@ -20,43 +20,13 @@
         <section>
           <h1 class="font-bold text-4xl tracking-wider">Desserts</h1>
 
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-8">
-            <div class="card border border-Rose-100 rounded-2xl bg-Rose-50">
-              <div class="border h-64 border-transparent relative">
-                <picture class="max-w-full w-full h-full rounded-2xl block">
-                  <source
-                    media="(min-width: 1024px)"
-                    srcset="./assets/images/image-waffle-desktop.jpg"
-                  />
-                  <source
-                    media="(min-width: 768px)"
-                    srcset="./assets/images/image-waffle-tablet.jpg"
-                  />
-                  <img
-                    src="./assets/images/image-waffle-mobile.jpg"
-                    alt="waffle"
-                    class="max-w-full rounded-2xl h-full object-cover w-full"
-                  />
-                </picture>
-                <div class="absolute top-full left-1/2 -translate-1/2">
-                  <button
-                    class="w-full h-full py-2 px-3 md:px-8 flex justify-center items-center gap-2 bg-white border rounded-full cursor-pointer hover:border-primary hover:text-primary whitespace-nowrap shadow"
-                  >
-                    <img src="./assets/images/icon-add-to-cart.svg" alt="" />
-                    <span>Add To Cart</span>
-                  </button>
-                </div>
-              </div>
-              <div class="space-x-2 p-4 mt-4">
-                <p class="font-light text-Rose-400">Waffle</p>
-                <p class="font-bold">Waffle with Berries</p>
-                <p class="text-primary font-semibold">$6.50</p>
-              </div>
-            </div>
-          </div>
+          <div
+            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-8"
+            id="productsContainer"
+          ></div>
         </section>
 
-        <section class="border">
+        <section>
           <div class="bg-white p-4 rounded-2xl">
             <h2 class="font-bold text-primary">
               Your Cart (<span id="numberOfItemsInCart">0</span>)
@@ -76,40 +46,13 @@
             </div>
 
             <div id="itemsInCartState" class="hidden flex-col gap-2 mt-4">
-              u
-              <ul class="*:border-b *:border-b-Rose-300">
-                <li class="flex items-center justify-between p-4">
-                  <div class="flex flex-col gap-2">
-                    <span class="font-bold" id="nameOfItemToBeBought"
-                      >Classic Tiramisu</span
-                    >
-                    <div class="flex items-center gap-3 text-xs">
-                      <span
-                        id="quantityOfItemToBeBought"
-                        class="text-primary font-bold"
-                        >4x</span
-                      >
-                      <span id="priceOfItem">@ 5.50</span>
-                      <span id="totalPriceOfItem">30.50</span>
-                    </div>
-                  </div>
-                  <button
-                    class="cursor-pointer border rounded-full border-Rose-300 hover:border-Rose-900"
-                    aria-label="Remove item from cart"
-                  >
-                    <img
-                      src="./assets/images/icon-remove-item.svg"
-                      alt=""
-                      class="size-3"
-                    />
-                  </button>
-                </li>
-              </ul>
+              <ul class="*:border-b *:border-b-Rose-300" id="cartItems"></ul>
               <div class="flex items-center justify-between p-4">
                 <span>Order Total</span>
-                <span id="totalAmountOfAllOrders" class="font-bold text-xl"
-                  >$46.50</span
-                >
+                <span
+                  id="totalAmountOfAllOrders"
+                  class="font-bold text-xl"
+                ></span>
               </div>
               <div
                 class="p-3 flex items-center justify-center gap-2 text-xs bg-Rose-100 rounded-xl"
@@ -145,5 +88,7 @@
         >.
       </p>
     </footer>
+
+    <script src="./script/index.js"></script>
   </body>
 </html>
