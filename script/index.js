@@ -18,7 +18,7 @@ cartItemsList.innerHTML = "";
 let allProducts = [];
 
 async function getInitialData() {
-  const res = await fetch("data.JSON");
+  const res = await fetch("./data.JSON");
   if (!res.ok) throw new Error("Error fetching data");
   const data = await res.json();
   return data;

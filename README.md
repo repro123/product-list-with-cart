@@ -27,8 +27,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [GitHub Repository](https://github.com/yourusername/product-list-with-cart)
-- Live Site URL: [Live Demo](https://your-live-site-url.com)
+- Solution URL: [https://www.frontendmentor.io/solutions/product-list-with-cart-wirh-vanilla-javascript-hP_lvhVACO](https://www.frontendmentor.io/solutions/product-list-with-cart-wirh-vanilla-javascript-hP_lvhVACO)
+- Live Site URL: [https://product-list-with-cart-orpin.vercel.app/](https://product-list-with-cart-orpin.vercel.app/)
 
 ## My process
 
@@ -103,8 +103,3 @@ function showConfirmOrderModal() {
 
 **5. Array Methods**
 Using reduce, filter, and map to manage cart calculations and transformations efficiently.
-
-## Author
-
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- GitHub - [@yourusername](https://github.com/yourusername)
