@@ -16,7 +16,7 @@
     class="font-redhat antialiased text-Rose-900 flex flex-col bg-linear-to-b from-Rose-100 from-10% to-Rose-50 bg-no-repeat min-h-dvh"
   >
     <main class="grow p-4 mb-8">
-      <aside class="container mt-6 grid gap-6 lg:grid-cols-[3fr_1fr]">
+      <section class="container mt-6 grid gap-6 lg:grid-cols-[3fr_1fr]">
         <section>
           <h1 class="font-bold text-4xl tracking-wider">Desserts</h1>
 
@@ -26,7 +26,7 @@
           ></div>
         </section>
 
-        <section>
+        <aside>
           <div class="bg-white p-4 rounded-2xl">
             <h2 class="font-bold text-primary">
               Your Cart (<span id="numberOfItemsInCart">0</span>)
@@ -62,16 +62,20 @@
               </div>
               <button
                 id="confirmOrderBtn"
+                type="button"
                 class="bg-primary hover:bg-Rose-500 text-Rose-50 cursor-pointer rounded-full py-3 px-6 w-full"
               >
                 Confirm Order
               </button>
             </div>
           </div>
-        </section>
-      </aside>
+        </aside>
+      </section>
 
-      <section
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirmedOrder"
         id="confirmOrderSection"
         class="fixed w-full top-0 left-0 bg-black/30 min-h-dvh hidden items-center justify-center"
       >
@@ -83,7 +87,9 @@
             alt=""
             class="size-12"
           />
-          <h2 class="font-bold mt-6 text-3xl">Order Confirmed</h2>
+          <h2 class="font-bold mt-6 text-3xl" id="confirmedOrder">
+            Order Confirmed
+          </h2>
           <p class="mt-2">We hope you enjoy your food.</p>
 
           <div
@@ -94,12 +100,13 @@
 
           <button
             id="startNewOrder"
+            type="button"
             class="bg-primary text-white rounded-full cursor-pointer w-full py-3 mt-auto"
           >
             Start New Order
           </button>
         </div>
-      </section>
+      </div>
     </main>
 
     <footer class="mt-auto text-center p-2">

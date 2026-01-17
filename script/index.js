@@ -53,7 +53,7 @@ async function renderProducts(data) {
                   />
                 </picture>
                 <div class="absolute top-full left-1/2 -translate-1/2">
-                  <button
+                  <button type="button"
                     class="w-48 h-full py-2 px-3 md:px-8 flex justify-center items-center gap-2 bg-white border rounded-full cursor-pointer hover:border-primary hover:text-primary whitespace-nowrap shadow add-to-cart-btn" data-id="${i}"
                   >
                     <img src="./assets/images/icon-add-to-cart.svg" alt="" />
@@ -62,7 +62,7 @@ async function renderProducts(data) {
                   <div
                     class="w-48 h-full py-2 px-3  hidden justify-between items-center gap-2 bg-primary text-white border rounded-full whitespace-nowrap shadow controller-div"
                   >
-                    <button
+                    <button type="button"
                       aria-label="remove one ${product.name} from cart"
                       class="rounded-full border p-2 cursor-pointer decrement-btn" data-id="${i}"
                     >
@@ -73,7 +73,7 @@ async function renderProducts(data) {
                       />
                     </button>
                     <span class="quantity-of-product" data-id="${i}">1</span>
-                    <button
+                    <button type="button"
                       aria-label="add one more ${product.name} to cart"
                       class="rounded-full border p-2 cursor-pointer increment-btn" data-id="${i}"
                     >
