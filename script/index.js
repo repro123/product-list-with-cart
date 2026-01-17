@@ -1,10 +1,17 @@
 "use strict";
+let cart = [];
+
 const productsContainer = document.querySelector("#productsContainer");
 const emptyCartDiv = document.querySelector("#emptyCartState");
 const itemsInCartState = document.querySelector("#itemsInCartState");
 const cartItemsList = document.querySelector("#cartItems");
 const numberOfItemsInCart = document.querySelector("#numberOfItemsInCart");
 const totalPriceOfAllOrders = document.querySelector("#totalAmountOfAllOrders");
+const confirmOrderBtn = document.querySelector("#confirmOrderBtn");
+const confirmOrderSection = document.querySelector("#confirmOrderSection");
+const body = document.querySelector("body");
+const confirmedOrderList = document.querySelector("#confirmedOrderList");
+const startNewOrder = document.querySelector("#startNewOrder");
 
 productsContainer.innerHTML = "";
 cartItemsList.innerHTML = "";
@@ -93,78 +100,6 @@ async function renderProducts(data) {
     productsContainer.innerHTML = `<p>Could not fetch products: ${error.message}</p>`;
   }
 }
-
-let cart = [];
-
-productsContainer.addEventListener("click", function (e) {
-  const addToCartBtn = e.target.closest(".add-to-cart-btn");
-  const incrementBtn = e.target.closest(".increment-btn");
-  const decrementBtn = e.target.closest(".decrement-btn");
-  if (addToCartBtn) {
-    const card = addToCartBtn.closest(".card");
-    const imageContainer = card.querySelector(".imageContainer");
-    const controllerDiv = card.querySelector(".controller-div");
-    const productId = addToCartBtn.dataset.id;
-    const {
-      name,
-      price,
-      image: { thumbnail },
-    } = allProducts[productId];
-
-    const selectedProduct = {
-      name,
-      price,
-      thumbnail,
-      id: productId,
-      quantity: 1,
-    };
-    addToCart(selectedProduct);
-    updateCartUi();
-    updateCartData(cart);
-
-    addActiveBorder(imageContainer);
-    updateButtonsVisibility(controllerDiv, addToCartBtn);
-  }
-
-  if (incrementBtn) {
-    const increasedProductId = incrementBtn.dataset.id;
-    const increasedProduct = cart.find(
-      (item) => item.id === increasedProductId
-    );
-    if (increasedProduct) {
-      increasedProduct.quantity++;
-      updateCartData(cart);
-    }
-  }
-
-  if (decrementBtn) {
-    const card = decrementBtn.closest(".card");
-    const decreasedProductId = decrementBtn.dataset.id;
-    const decreasedProduct = cart.find(
-      (item) => item.id === decreasedProductId
-    );
-    if (decreasedProduct) {
-      if (decreasedProduct.quantity == 1) {
-        const imageContainer = card.querySelector(".imageContainer");
-        const controllerDiv = card.querySelector(".controller-div");
-        const addToCartBtn = card.querySelector(".add-to-cart-btn");
-
-        const updatedCart = cart.filter(
-          (products) => products.id !== decreasedProductId
-        );
-        cart = updatedCart;
-        updateCartData(cart);
-
-        removeActiveBorder(imageContainer);
-        resetButtonsVisibility(controllerDiv, addToCartBtn);
-        return;
-      }
-
-      decreasedProduct.quantity--;
-      updateCartData(cart);
-    }
-  }
-});
 
 function addActiveBorder(el) {
   el.classList.add("border-primary");
@@ -276,6 +211,161 @@ function addToCart(data) {
   cart.push(data);
 }
 
+function renderConfirmOrderLists(data) {
+  const html = data
+    .map(
+      (item) => `
+        <li class="flex items-center justify-between gap-4">
+                <div class="flex gap-4">
+                  <img
+                    src="${item.thumbnail}"
+                    alt="${item.name}"
+                    class="w-16"
+                  />
+                  <div class="grid">
+                    <span class="font-semibold truncate"
+                      >${item.name}</span
+                    >
+                    <div class="flex items-center gap-4">
+                      <span class="text-primary font-semibold">${
+                        item.quantity
+                      }x</span>
+                      <span>@ $${item.price.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+                <span class="font-bold">$${(item.price * item.quantity).toFixed(
+                  2
+                )}</span>
+              </li>
+  `
+    )
+    .join("");
+
+  confirmedOrderList.insertAdjacentHTML("beforeend", html);
+
+  const totalOrderPrice = cart
+    .map((item) => item.price * item.quantity)
+    .reduce((acc, t) => acc + t, 0);
+
+  const confirmedTotals = `
+            <p
+              class="confirmed-totals flex items-center justify-between mt-auto"
+            >
+              <span>Order total:</span>
+              <span class="font-bold text-3xl">$${totalOrderPrice.toFixed(
+                2
+              )}</span>
+            </p>
+  `;
+  confirmedOrderList.insertAdjacentHTML("afterend", confirmedTotals);
+}
+
+function showConfirmOrderModal() {
+  confirmOrderSection.classList.add("flex");
+  confirmOrderSection.classList.remove("hidden");
+  body.classList.add("overflow-hidden");
+}
+
+function hideConfirmOrderModal() {
+  confirmOrderSection.classList.remove("flex");
+  confirmOrderSection.classList.add("hidden");
+  body.classList.remove("overflow-hidden");
+}
+
+function resetProductCard(card) {
+  const imageContainer = card.querySelector(".imageContainer");
+  const addToCartBtn = card.querySelector(".add-to-cart-btn");
+  const controllerDiv = card.querySelector(".controller-div");
+  const qtyEl = card.querySelector(".quantity-of-product");
+
+  removeActiveBorder(imageContainer);
+
+  controllerDiv.classList.add("hidden");
+  controllerDiv.classList.remove("flex");
+  addToCartBtn.classList.add("flex");
+  addToCartBtn.classList.remove("hidden");
+
+  if (qtyEl) qtyEl.textContent = "1";
+}
+
+function clearConfirmOrderUI() {
+  confirmedOrderList.innerHTML = "";
+
+  const totalsEl = document.querySelector(".confirmed-totals");
+  if (totalsEl) totalsEl.remove();
+}
+
+productsContainer.addEventListener("click", function (e) {
+  const addToCartBtn = e.target.closest(".add-to-cart-btn");
+  const incrementBtn = e.target.closest(".increment-btn");
+  const decrementBtn = e.target.closest(".decrement-btn");
+  if (addToCartBtn) {
+    const card = addToCartBtn.closest(".card");
+    const imageContainer = card.querySelector(".imageContainer");
+    const controllerDiv = card.querySelector(".controller-div");
+    const productId = addToCartBtn.dataset.id;
+    const {
+      name,
+      price,
+      image: { thumbnail },
+    } = allProducts[productId];
+
+    const selectedProduct = {
+      name,
+      price,
+      thumbnail,
+      id: productId,
+      quantity: 1,
+    };
+    addToCart(selectedProduct);
+    updateCartUi();
+    updateCartData(cart);
+
+    addActiveBorder(imageContainer);
+    updateButtonsVisibility(controllerDiv, addToCartBtn);
+  }
+
+  if (incrementBtn) {
+    const increasedProductId = incrementBtn.dataset.id;
+    const increasedProduct = cart.find(
+      (item) => item.id === increasedProductId
+    );
+    if (increasedProduct) {
+      increasedProduct.quantity++;
+      updateCartData(cart);
+    }
+  }
+
+  if (decrementBtn) {
+    const card = decrementBtn.closest(".card");
+    const decreasedProductId = decrementBtn.dataset.id;
+    const decreasedProduct = cart.find(
+      (item) => item.id === decreasedProductId
+    );
+    if (decreasedProduct) {
+      if (decreasedProduct.quantity == 1) {
+        const imageContainer = card.querySelector(".imageContainer");
+        const controllerDiv = card.querySelector(".controller-div");
+        const addToCartBtn = card.querySelector(".add-to-cart-btn");
+
+        const updatedCart = cart.filter(
+          (products) => products.id !== decreasedProductId
+        );
+        cart = updatedCart;
+        updateCartData(cart);
+
+        removeActiveBorder(imageContainer);
+        resetButtonsVisibility(controllerDiv, addToCartBtn);
+        return;
+      }
+
+      decreasedProduct.quantity--;
+      updateCartData(cart);
+    }
+  }
+});
+
 cartItemsList.addEventListener("click", function (e) {
   const deleteBtn = e.target.closest(".delete-btn");
   if (deleteBtn) {
@@ -297,4 +387,20 @@ cartItemsList.addEventListener("click", function (e) {
     removeActiveBorder(imgContainer);
     resetButtonsVisibility(controllerDiv, addToCartBtn);
   }
+});
+
+confirmOrderBtn.addEventListener("click", function () {
+  renderConfirmOrderLists(cart);
+  showConfirmOrderModal();
+});
+
+startNewOrder.addEventListener("click", function () {
+  hideConfirmOrderModal();
+
+  cart = [];
+  updateCartData(cart);
+  resetCartUi();
+  clearConfirmOrderUI();
+
+  document.querySelectorAll(".card").forEach((card) => resetProductCard(card));
 });

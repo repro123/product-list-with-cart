@@ -70,6 +70,36 @@
           </div>
         </section>
       </div>
+
+      <section
+        id="confirmOrderSection"
+        class="fixed w-full top-0 left-0 bg-black/30 min-h-dvh hidden items-center justify-center"
+      >
+        <div
+          class="bg-white p-6 mt-auto sm:mt-0 w-full sm:max-w-lg sm:h-auto rounded-t-2xl sm:rounded-2xl max-sm:h-[90vh] flex flex-col"
+        >
+          <img
+            src="./assets/images/icon-order-confirmed.svg"
+            alt=""
+            class="size-12"
+          />
+          <h2 class="font-bold mt-6 text-3xl">Order Confirmed</h2>
+          <p class="mt-2">We hope you enjoy your food.</p>
+
+          <div
+            class="my-4 h-96 bg-Rose-50 rounded-lg p-2 overflow-y-auto flex flex-col gap-6"
+          >
+            <ul class="space-y-8" id="confirmedOrderList"></ul>
+          </div>
+
+          <button
+            id="startNewOrder"
+            class="bg-primary text-white rounded-full cursor-pointer w-full py-3 mt-auto"
+          >
+            Start New Order
+          </button>
+        </div>
+      </section>
     </main>
 
     <footer class="mt-auto text-center p-2">
